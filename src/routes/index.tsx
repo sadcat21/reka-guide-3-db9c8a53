@@ -70,7 +70,7 @@ function Index() {
           <SectionTitle title={t.about.title} subtitle={t.about.text} />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {t.about.pillars.map((p, i) => {
-              const Icon = pillarIcons[i];
+              const Icon = pillarIcons[i] ?? BookOpen;
               return (
                 <div key={p} className="rounded-2xl border border-border bg-card p-6 text-center shadow-card">
                   <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary/10 text-primary"><Icon className="h-7 w-7" /></div>
@@ -118,7 +118,7 @@ function Index() {
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {t.team.items.map((m, i) => {
-              const Icon = teamIcons[i];
+              const Icon = teamIcons[i] ?? ScrollText;
               return (
                 <div key={m.title} className="rounded-2xl border border-teal-foreground/15 bg-teal-foreground/5 p-6">
                   <Icon className="h-8 w-8 text-gold" />
@@ -137,7 +137,7 @@ function Index() {
           <SectionTitle title={t.practice.title} subtitle={t.practice.text} />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {t.practice.items.map((p, i) => {
-              const Icon = practiceIcons[i];
+              const Icon = practiceIcons[i] ?? Building2;
               return (
                 <div key={p} className="flex flex-col items-center rounded-2xl bg-card p-8 text-center shadow-card">
                   <div className="grid h-16 w-16 place-items-center rounded-2xl bg-gold-gradient text-gold-foreground"><Icon className="h-8 w-8" /></div>
