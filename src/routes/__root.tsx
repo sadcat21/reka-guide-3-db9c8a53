@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { JourneyProvider } from "@/components/JourneyProvider";
 import { LanguageProvider } from "../i18n/LanguageProvider";
 import { SiteHeader, SiteFooter } from "../components/SiteHeader";
 import appCss from "../styles.css?url";
@@ -84,7 +85,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "تكوين مرشدي ومرافقي الحج والعمرة" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -93,8 +93,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap",
+      },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
   }),
   shellComponent: RootShell,
@@ -124,9 +127,13 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <LanguageProvider>
-        <SiteHeader />
-        <main><Outlet /></main>
-        <SiteFooter />
+        <JourneyProvider>
+          <SiteHeader />
+          <main>
+            <Outlet />
+          </main>
+          <SiteFooter />
+        </JourneyProvider>
       </LanguageProvider>
     </QueryClientProvider>
   );

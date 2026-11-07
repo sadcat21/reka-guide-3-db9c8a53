@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Use `src/lib/journey.ts` as the single source for questionnaire IDs, profile rules, prices and validation; bilingual display copy stays separate from stable answer values.
+- Mount JourneyProvider in the shared root to preserve answers across routes; read browser storage only after hydration.
+- Keep registration submission behind `src/services/registrationService.ts` so a future validated remote implementation can replace the explicit local demonstration without changing the UI.

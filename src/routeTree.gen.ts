@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as RegistrationSuccessRouteImport } from './routes/registration-success'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,40 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegistrationSuccessRoute = RegistrationSuccessRouteImport.update({
+  id: '/registration-success',
+  path: '/registration-success',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/registration-success': typeof RegistrationSuccessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/registration-success': typeof RegistrationSuccessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/registration-success': typeof RegistrationSuccessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/register'
+  fullPaths: '/' | '/register' | '/registration-success'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/register'
-  id: '__root__' | '/' | '/register'
+  to: '/' | '/register' | '/registration-success'
+  id: '__root__' | '/' | '/register' | '/registration-success'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RegisterRoute: typeof RegisterRoute
+  RegistrationSuccessRoute: typeof RegistrationSuccessRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/registration-success': {
+      id: '/registration-success'
+      path: '/registration-success'
+      fullPath: '/registration-success'
+      preLoaderRoute: typeof RegistrationSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RegisterRoute: RegisterRoute,
+  RegistrationSuccessRoute: RegistrationSuccessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
