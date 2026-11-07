@@ -3,3 +3,5 @@
 - [ ] Add guided registration, answer reuse, validation, review/edit, and local-demo success page.
 - [ ] Correct package pricing and add accommodation, package benefits and FAQ.
 - [ ] Update navigation, preserve language/drafts, and check mobile/desktop flows and domain rules.
+- [ ] Design and apply a program logo and matching favicon.
+- [ ] Provide Arabic promotional caption with https://refka-guide.vercel.app/ registration link.
