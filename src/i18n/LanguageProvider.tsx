@@ -9,8 +9,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("ar");
 
   useEffect(() => {
-    const saved = window.localStorage.getItem(KEY);
-    if (saved === "ar" || saved === "fr") setLangState(saved);
+    try {
+      const saved = window.localStorage.getItem(KEY);
+      if (saved === "ar" || saved === "fr") setLangState(saved);
+    } catch {
+      /* Keep default language. */
+    }
   }, []);
 
   useEffect(() => {
@@ -20,11 +24,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLang = (l: Lang) => {
     setLangState(l);
-    window.localStorage.setItem(KEY, l);
+    try {
+      window.localStorage.setItem(KEY, l);
+    } catch {
+      /* Language still switches in memory. */
+    }
   };
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t: translations[lang], dir: lang === "ar" ? "rtl" : "ltr" }}>
+    <LanguageContext.Provider
+      value={{ lang, setLang, t: translations[lang], dir: lang === "ar" ? "rtl" : "ltr" }}
+    >
       {children}
     </LanguageContext.Provider>
   );

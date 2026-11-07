@@ -2,12 +2,19 @@ export type Lang = "ar" | "fr";
 
 const ar = {
   brand: "الرفقة الطيبة",
-  nav: { program: "البرنامج", stages: "المراحل", team: "المدربون", pricing: "الباقات", register: "سجل الآن", home: "الرئيسية" },
+  nav: {
+    program: "البرنامج",
+    stages: "المراحل",
+    team: "المدربون",
+    pricing: "الباقات",
+    register: "سجل الآن",
+    home: "الرئيسية",
+  },
   hero: {
     trust: "تكوين يجمع بين المعرفة والتطبيق",
-    title: "كن مرشدًا يصنع الفرق في رحلة الحاج والمعتمر",
-    text: "برنامج الرفقة الطيبة هو تكوين عملي لإعداد المرشد والمرافق في الحج والعمرة، يجمع بين المعرفة الشرعية، المهارات الميدانية، القيادة، السلامة، التواصل والحضور الرقمي.",
-    cta: "سجل الآن",
+    title: "من زائر للحرم... إلى مرشد يصنع الفرق",
+    text: "هل فكرت يومًا أن تكون جزءًا من رحلة الحاج والمعتمر، لا مجرد مرافق لها؟ اكتشف المهارات التي تحتاجها لتصبح مرشدًا قادرًا على المرافقة والتنظيم والتوجيه.",
+    cta: "اكتشف ما يناسبك",
     secondary: "اكتشف البرنامج",
   },
   about: {
@@ -21,22 +28,67 @@ const ar = {
     label: "المرحلة",
     note: "المراحل الثلاث متكاملة وتُقدَّم ضمن دفعة تدريبية واحدة.",
     items: [
-      { title: "مرشد ومرافق الحج والعمرة", points: ["فقه الحج والعمرة للمرشد.", "إدارة رحلة الحاج والمعتمر.", "فن المرافقة والخدمة.", "استقبال المجموعة وتنظيمها.", "التعامل مع المواقف الميدانية.", "المحاكاة والتطبيق العملي.", "الصحة والسلامة والطوارئ."] },
-      { title: "قائد المرشدين ومدير العمليات", points: ["قيادة فرق المرشدين والمرافقين.", "إدارة العمليات وغرفة العمليات.", "إدارة الأزمات والمواقف الصعبة.", "تخطيط برامج الحج والعمرة.", "إدارة الموارد والخدمات.", "تقييم جودة الخدمة.", "التقارير وتحسين الأداء."] },
-      { title: "المرشد الرقمي وصانع المحتوى", points: ["بناء الهوية المهنية.", "التسويق الشخصي للمرشد.", "استراتيجية صناعة المحتوى.", "كتابة الأفكار والسيناريوهات.", "التصوير بالهاتف.", "الإضاءة والصوت والتأطير.", "المونتاج وإنتاج Reels وShorts."] },
+      {
+        title: "مرشد ومرافق الحج والعمرة",
+        points: [
+          "فقه الحج والعمرة للمرشد.",
+          "إدارة رحلة الحاج والمعتمر.",
+          "فن المرافقة والخدمة.",
+          "استقبال المجموعة وتنظيمها.",
+          "التعامل مع المواقف الميدانية.",
+          "المحاكاة والتطبيق العملي.",
+          "الصحة والسلامة والطوارئ.",
+        ],
+      },
+      {
+        title: "قائد المرشدين ومدير العمليات",
+        points: [
+          "قيادة فرق المرشدين والمرافقين.",
+          "إدارة العمليات وغرفة العمليات.",
+          "إدارة الأزمات والمواقف الصعبة.",
+          "تخطيط برامج الحج والعمرة.",
+          "إدارة الموارد والخدمات.",
+          "تقييم جودة الخدمة.",
+          "التقارير وتحسين الأداء.",
+        ],
+      },
+      {
+        title: "المرشد الرقمي وصانع المحتوى",
+        points: [
+          "بناء الهوية المهنية.",
+          "التسويق الشخصي للمرشد.",
+          "استراتيجية صناعة المحتوى.",
+          "كتابة الأفكار والسيناريوهات.",
+          "التصوير بالهاتف.",
+          "الإضاءة والصوت والتأطير.",
+          "المونتاج وإنتاج Reels وShorts.",
+        ],
+      },
     ],
   },
   team: {
     title: "فريق المدربين",
     subtitle: "نخبة من المختصين يغطون الجوانب الشرعية والميدانية والإدارية والصحية والرقمية.",
     items: [
-      { title: "المدرب الشرعي", desc: "يقدّم فقه الحج والعمرة وأحكام المناسك بما يحتاجه المرشد عمليًا." },
+      {
+        title: "المدرب الشرعي",
+        desc: "يقدّم فقه الحج والعمرة وأحكام المناسك بما يحتاجه المرشد عمليًا.",
+      },
       { title: "المرشد الميداني", desc: "ينقل خبرة المرافقة على أرض الواقع وتنظيم المجموعات." },
-      { title: "المدير الإداري / مدير الوكالة", desc: "يشرح إدارة الرحلات والعمليات وسير العمل داخل الوكالة." },
-      { title: "عون الحماية المدنية", desc: "يدرّب على الإسعافات الأولية والسلامة والتصرف في الطوارئ." },
+      {
+        title: "المدير الإداري / مدير الوكالة",
+        desc: "يشرح إدارة الرحلات والعمليات وسير العمل داخل الوكالة.",
+      },
+      {
+        title: "عون الحماية المدنية",
+        desc: "يدرّب على الإسعافات الأولية والسلامة والتصرف في الطوارئ.",
+      },
       { title: "الطبيب", desc: "يتناول صحة الحاج والمعتمر والوقاية والحالات الصحية الشائعة." },
       { title: "مدرب التواصل", desc: "يطوّر مهارات التواصل وخدمة العملاء والتعامل مع الأشخاص." },
-      { title: "مدرب المحتوى والتصوير والمونتاج", desc: "يعلّم التصوير بالهاتف وصناعة المحتوى والمونتاج." },
+      {
+        title: "مدرب المحتوى والتصوير والمونتاج",
+        desc: "يعلّم التصوير بالهاتف وصناعة المحتوى والمونتاج.",
+      },
     ],
   },
   practice: {
@@ -56,7 +108,7 @@ const ar = {
       "شهادة تربص من الوكالة وفق شروطها.",
       "الاستفادة من بطاقات الخصم بحسب الباقة.",
       "فرصة للمشاركة في سحب العمرة المجانية في كل فوج وفق شروط البرنامج.",
-      "إمكانية التوظيف الجزئي وفق شروط الوكالة بعد إتمام التدريب.",
+      "إمكانية التوظيف الجزئي بعد التدريب وفق احتياجات الوكالة وشروط الاختيار.",
     ],
   },
   pricing: {
@@ -70,7 +122,11 @@ const ar = {
     names: { silver: "فضية", gold: "ذهبية", diamond: "ماسية" },
     currency: "دج",
   },
-  finalCta: { title: "انضم إلى الدفعة القادمة", text: "خطوتك الأولى نحو مرافقة مهنية للحجاج والمعتمرين.", cta: "سجل الآن" },
+  finalCta: {
+    title: "انضم إلى الدفعة القادمة",
+    text: "خطوتك الأولى نحو مرافقة مهنية للحجاج والمعتمرين.",
+    cta: "سجل الآن",
+  },
   footer: "جميع الحقوق محفوظة.",
   form: {
     title: "طلب التسجيل في البرنامج",
@@ -107,18 +163,30 @@ type Dict = typeof ar;
 
 const fr: Dict = {
   brand: "AL-RIFQA AL-TAYYIBA",
-  nav: { program: "Programme", stages: "Étapes", team: "Formateurs", pricing: "Formules", register: "S'inscrire", home: "Accueil" },
+  nav: {
+    program: "Programme",
+    stages: "Étapes",
+    team: "Formateurs",
+    pricing: "Formules",
+    register: "S'inscrire",
+    home: "Accueil",
+  },
   hero: {
     trust: "Une formation qui allie savoir et pratique",
-    title: "Devenez un guide qui fait la différence dans le parcours du pèlerin",
-    text: "Al-Rifqa Al-Tayyiba est un programme de formation pratique destiné à préparer les guides et accompagnateurs du Hajj et de la Omra, en combinant connaissances religieuses, compétences de terrain, leadership, sécurité, communication et présence numérique.",
-    cta: "S'inscrire maintenant",
+    title: "De visiteur des lieux saints à guide qui fait la différence",
+    text: "Et si vous deveniez acteur du parcours des pèlerins ? Découvrez les compétences nécessaires pour accompagner, organiser et guider les voyageurs du Hajj et de la Omra.",
+    cta: "Découvrez votre profil",
     secondary: "Découvrir le programme",
   },
   about: {
     title: "Qu'est-ce que le programme Al-Rifqa Al-Tayyiba ?",
     text: "Un programme de formation pratique visant à préparer les guides et accompagnateurs du Hajj et de la Omra, en leur permettant d'acquérir les compétences nécessaires pour accompagner les pèlerins, gérer différentes situations et contribuer à un service organisé et sécurisé.",
-    pillars: ["Connaissances religieuses", "Compétences de terrain", "Leadership et organisation", "Sécurité et communication"],
+    pillars: [
+      "Connaissances religieuses",
+      "Compétences de terrain",
+      "Leadership et organisation",
+      "Sécurité et communication",
+    ],
   },
   stages: {
     eyebrow: "Un seul parcours de formation",
@@ -126,22 +194,77 @@ const fr: Dict = {
     label: "Étape",
     note: "Les trois étapes sont complémentaires et proposées dans une seule promotion de formation.",
     items: [
-      { title: "Guide et accompagnateur du Hajj et de la Omra", points: ["Jurisprudence du Hajj et de la Omra.", "Gestion du parcours des pèlerins.", "Accompagnement et service.", "Accueil et organisation du groupe.", "Gestion des situations sur le terrain.", "Simulations et mises en pratique.", "Santé, sécurité et urgences."] },
-      { title: "Chef des guides et responsable des opérations", points: ["Leadership des équipes de guides.", "Gestion des opérations et du centre opérationnel.", "Gestion des crises.", "Planification des programmes du Hajj et de la Omra.", "Gestion des ressources et des services.", "Évaluation de la qualité.", "Rapports et amélioration des performances."] },
-      { title: "Guide digital et créateur de contenu", points: ["Construction de l'identité professionnelle.", "Marketing personnel du guide.", "Stratégie de création de contenu.", "Idées et rédaction de scénarios.", "Photographie avec smartphone.", "Éclairage, son et cadrage.", "Montage et création de Reels et Shorts."] },
+      {
+        title: "Guide et accompagnateur du Hajj et de la Omra",
+        points: [
+          "Jurisprudence du Hajj et de la Omra.",
+          "Gestion du parcours des pèlerins.",
+          "Accompagnement et service.",
+          "Accueil et organisation du groupe.",
+          "Gestion des situations sur le terrain.",
+          "Simulations et mises en pratique.",
+          "Santé, sécurité et urgences.",
+        ],
+      },
+      {
+        title: "Chef des guides et responsable des opérations",
+        points: [
+          "Leadership des équipes de guides.",
+          "Gestion des opérations et du centre opérationnel.",
+          "Gestion des crises.",
+          "Planification des programmes du Hajj et de la Omra.",
+          "Gestion des ressources et des services.",
+          "Évaluation de la qualité.",
+          "Rapports et amélioration des performances.",
+        ],
+      },
+      {
+        title: "Guide digital et créateur de contenu",
+        points: [
+          "Construction de l'identité professionnelle.",
+          "Marketing personnel du guide.",
+          "Stratégie de création de contenu.",
+          "Idées et rédaction de scénarios.",
+          "Photographie avec smartphone.",
+          "Éclairage, son et cadrage.",
+          "Montage et création de Reels et Shorts.",
+        ],
+      },
     ],
   },
   team: {
     title: "L'équipe de formateurs",
-    subtitle: "Des spécialistes couvrant les aspects religieux, terrain, administratifs, sanitaires et numériques.",
+    subtitle:
+      "Des spécialistes couvrant les aspects religieux, terrain, administratifs, sanitaires et numériques.",
     items: [
-      { title: "Formateur en sciences religieuses", desc: "Enseigne la jurisprudence du Hajj et de la Omra utile au guide sur le terrain." },
-      { title: "Guide de terrain", desc: "Transmet l'expérience réelle de l'accompagnement et de l'organisation des groupes." },
-      { title: "Directeur d'agence et des opérations", desc: "Explique la gestion des voyages, des opérations et le fonctionnement d'une agence." },
-      { title: "Agent de la Protection civile", desc: "Forme aux premiers secours, à la sécurité et aux réactions en cas d'urgence." },
-      { title: "Médecin", desc: "Aborde la santé du pèlerin, la prévention et les situations médicales courantes." },
-      { title: "Formateur en communication", desc: "Développe la communication, le service client et les relations humaines." },
-      { title: "Formateur en création de contenu et montage vidéo", desc: "Enseigne la prise de vue au smartphone, la création de contenu et le montage." },
+      {
+        title: "Formateur en sciences religieuses",
+        desc: "Enseigne la jurisprudence du Hajj et de la Omra utile au guide sur le terrain.",
+      },
+      {
+        title: "Guide de terrain",
+        desc: "Transmet l'expérience réelle de l'accompagnement et de l'organisation des groupes.",
+      },
+      {
+        title: "Directeur d'agence et des opérations",
+        desc: "Explique la gestion des voyages, des opérations et le fonctionnement d'une agence.",
+      },
+      {
+        title: "Agent de la Protection civile",
+        desc: "Forme aux premiers secours, à la sécurité et aux réactions en cas d'urgence.",
+      },
+      {
+        title: "Médecin",
+        desc: "Aborde la santé du pèlerin, la prévention et les situations médicales courantes.",
+      },
+      {
+        title: "Formateur en communication",
+        desc: "Développe la communication, le service client et les relations humaines.",
+      },
+      {
+        title: "Formateur en création de contenu et montage vidéo",
+        desc: "Enseigne la prise de vue au smartphone, la création de contenu et le montage.",
+      },
     ],
   },
   practice: {
@@ -161,7 +284,7 @@ const fr: Dict = {
       "Attestation de stage délivrée par l'agence selon ses conditions.",
       "Cartes de réduction selon la formule choisie.",
       "Participation au tirage au sort d'une Omra gratuite à chaque promotion, selon les conditions du programme.",
-      "Possibilité d'emploi à temps partiel selon les conditions de l'agence après la formation.",
+      "Possibilité d’emploi à temps partiel après la formation selon les besoins de l’agence et les critères de sélection.",
     ],
   },
   pricing: {
@@ -175,7 +298,11 @@ const fr: Dict = {
     names: { silver: "Argent", gold: "Or", diamond: "Diamant" },
     currency: "DA",
   },
-  finalCta: { title: "Rejoignez la prochaine promotion", text: "Votre premier pas vers un accompagnement professionnel des pèlerins.", cta: "S'inscrire maintenant" },
+  finalCta: {
+    title: "Rejoignez la prochaine promotion",
+    text: "Votre premier pas vers un accompagnement professionnel des pèlerins.",
+    cta: "S'inscrire maintenant",
+  },
   footer: "Tous droits réservés.",
   form: {
     title: "Demande d'inscription au programme",
@@ -202,7 +329,8 @@ const fr: Dict = {
       city: "Veuillez indiquer votre wilaya ou ville.",
     },
     successTitle: "Demande reçue",
-    successText: "Merci ! Votre demande a été enregistrée sur cet appareil. Nous vous contacterons pour confirmer l'inscription.",
+    successText:
+      "Merci ! Votre demande a été enregistrée sur cet appareil. Nous vous contacterons pour confirmer l'inscription.",
     back: "Retour à l'accueil",
     another: "Nouvelle demande",
   },
