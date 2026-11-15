@@ -1,5 +1,6 @@
-import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useRef, useState } from "react";
+import { createTapCounter } from "@/lib/admin";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/i18n/LanguageProvider";
@@ -8,6 +9,8 @@ import logo from "@/assets/refka-logo.jpg";
 export function SiteHeader() {
   const { t, lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const tapRef = useRef(createTapCounter(4, 1500));
   const links = [
     { id: "program", label: t.nav.program },
     { id: "stages", label: t.nav.stages },
@@ -20,7 +23,16 @@ export function SiteHeader() {
     <>
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-          <Link to="/" className="flex min-w-0 items-center gap-2">
+          <Link
+            to="/"
+            className="flex min-w-0 items-center gap-2"
+            onClick={(e) => {
+              if (tapRef.current()) {
+                e.preventDefault();
+                void navigate({ to: "/admin-login" });
+              }
+            }}
+          >
             <img
               src={logo}
               width={1024}

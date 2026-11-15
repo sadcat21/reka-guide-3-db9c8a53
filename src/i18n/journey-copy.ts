@@ -67,29 +67,29 @@ export const copy = {
     "أوافق على استخدام بياناتي للتواصل معي بخصوص التسجيل في برنامج الرفقة الطيبة.",
     "J’accepte l’utilisation de mes informations pour être contacté au sujet de mon inscription au programme Al-Rifqa Al-Tayyiba.",
   ),
-  submit: bi("تأكيد طلب التسجيل التجريبي", "Confirmer ma demande de démonstration"),
+  submit: bi("تأكيد طلب التسجيل", "Confirmer ma demande d’inscription"),
   demo: bi(
-    "تسجيل تجريبي على هذا الجهاز فقط؛ لا يُرسل إلى الفريق ولا يؤكد حجزًا.",
-    "Démonstration enregistrée uniquement sur cet appareil ; rien n’est envoyé à l’équipe et aucune place n’est confirmée.",
+    "يُرسل طلبك إلى فريق البرنامج، وسيتواصل معك لتأكيد التسجيل.",
+    "Votre demande est envoyée à l’équipe du programme, qui vous contactera pour confirmer l’inscription.",
   ),
   invalid: bi(
     "يرجى استكمال المعلومات المطلوبة وإدخال رقم هاتف جزائري صحيح.",
     "Complétez les informations requises et indiquez un numéro algérien valide.",
   ),
   storageError: bi(
-    "تعذر الحفظ على هذا الجهاز. تحقق من السماح بالتخزين ثم حاول مجددًا.",
-    "Impossible d’enregistrer sur cet appareil. Autorisez le stockage puis réessayez.",
+    "تعذر إرسال الطلب. تحقق من الاتصال بالإنترنت ثم حاول مجددًا.",
+    "Impossible d’envoyer la demande. Vérifiez votre connexion puis réessayez.",
   ),
   success: bi("أحسنت! لقد اتخذت الخطوة الأولى", "Bravo ! Vous avez franchi la première étape."),
   successText: bi(
-    "تم إنشاء طلبك التجريبي محليًا. لتأكيد التسجيل الفعلي، ستحتاج إلى إرساله للفريق عند تفعيل استقبال الطلبات.",
-    "Votre demande de démonstration a été créée localement. Pour une inscription réelle, elle devra être transmise à l’équipe lorsque la réception des demandes sera activée.",
+    "وصل طلبك إلى فريق البرنامج، وسنتواصل معك قريبًا لتأكيد التسجيل.",
+    "Votre demande a bien été reçue par l’équipe du programme ; nous vous contacterons bientôt pour confirmer l’inscription.",
   ),
-  reference: bi("مرجع الطلب التجريبي", "Référence de démonstration"),
+  reference: bi("مرجع الطلب", "Référence de la demande"),
   home: bi("العودة إلى الصفحة الرئيسية", "Retour à l’accueil"),
   empty: bi(
-    "لا يوجد طلب تجريبي محفوظ على هذا الجهاز.",
-    "Aucune demande de démonstration enregistrée sur cet appareil.",
+    "لا يوجد طلب حديث على هذا الجهاز.",
+    "Aucune demande récente sur cet appareil.",
   ),
   language: bi("اللغة المفضلة", "Langue préférée"),
   faq: bi("الأسئلة الشائعة", "Questions fréquentes"),
@@ -156,8 +156,8 @@ export const faq = [
   [
     bi("كيف أؤكد التسجيل؟", "Comment confirmer mon inscription ?"),
     bi(
-      "بعد تفعيل استقبال الطلبات، أكمل الاستبيان ليتواصل معك الفريق. النسخة الحالية تجربة محلية فقط.",
-      "Lorsque la réception sera activée, remplissez le questionnaire pour être contacté. La version actuelle est une démonstration locale uniquement.",
+      "أكمل الاستبيان وطلب التسجيل، وسيتواصل معك الفريق لتأكيد مكانك.",
+      "Complétez le questionnaire et la demande d’inscription ; l’équipe vous contactera pour confirmer votre place.",
     ),
   ],
 ];

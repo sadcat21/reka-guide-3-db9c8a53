@@ -29,7 +29,7 @@ export const Route = createFileRoute("/register")({
       { title: "التسجيل المتدرج | الرفقة الطيبة" },
       {
         name: "description",
-        content: "اكتشف اهتماماتك وأكمل طلب التسجيل التجريبي في تكوين مرشدي الحج والعمرة.",
+        content: "اكتشف اهتماماتك وأكمل طلب التسجيل في تكوين مرشدي الحج والعمرة.",
       },
       { property: "og:title", content: "التسجيل | AL-RIFQA AL-TAYYIBA" },
       {

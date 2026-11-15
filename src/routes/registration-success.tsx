@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/registration-success")({
   head: () => ({
     meta: [
-      { title: "طلبك التجريبي | الرفقة الطيبة" },
-      { name: "description", content: "ملخص طلب التسجيل التجريبي المحلي في برنامج الرفقة الطيبة." },
+      { title: "تم استلام طلبك | الرفقة الطيبة" },
+      { name: "description", content: "ملخص طلب التسجيل في برنامج الرفقة الطيبة." },
       { property: "og:title", content: "ملخص التسجيل | الرفقة الطيبة" },
       {
         property: "og:description",
-        content: "Votre inscription de démonstration Al-Rifqa Al-Tayyiba.",
+        content: "Votre demande d’inscription Al-Rifqa Al-Tayyiba.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
