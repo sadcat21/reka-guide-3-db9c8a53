@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { loadAccounts, saveAccounts, setAccountToken } from "@/lib/saved-accounts";
 import { supabase } from "@/integrations/supabase/client";
 import { JourneyProvider } from "@/components/JourneyProvider";
 import { LanguageProvider } from "../i18n/LanguageProvider";
@@ -125,7 +126,14 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event) => {
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      // Keep the quick-switch copy of this account's session current.
+      if (session && (event === "SIGNED_IN" || event === "TOKEN_REFRESHED")) {
+        const list = loadAccounts();
+        if (list.some((a) => a.userId === session.user.id)) {
+          saveAccounts(setAccountToken(list, session.user.id, session.refresh_token));
+        }
+      }
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       void router.invalidate();
       if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
