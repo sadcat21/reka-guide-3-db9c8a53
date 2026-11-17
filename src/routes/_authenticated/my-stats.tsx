@@ -57,9 +57,10 @@ function MyStats() {
           {ar ? "هذه إنجازاتك وإحصائياتك في متابعة المسجلين." : "Vos résultats dans le suivi des inscriptions."}
         </p>
 
-        <dl className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+        <dl className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-7">
           <Card icon={<Trophy />} label={ar ? "مجموع الإنجازات" : "Total"} value={stats.total} />
           <Card icon={<PhoneCall />} label={ar ? "تم التواصل" : "Contactés"} value={stats.contacted} />
+          <Card icon={<PhoneCall />} label={ar ? "مكالمات موثقة" : "Appels notés"} value={stats.calls} />
           <Card icon={<ShieldCheck />} label={ar ? "طلبات مؤكدة" : "Confirmés"} value={stats.confirmed} />
           <Card icon={<CalendarCheck />} label={ar ? "اليوم" : "Aujourd’hui"} value={stats.today} />
           <Card icon={<CalendarCheck />} label={ar ? "آخر 7 أيام" : "7 derniers jours"} value={stats.last7} />
@@ -130,6 +131,8 @@ function MyStats() {
                   <span>
                     {r.action === "deleted"
                       ? ar ? "حذف الطلب" : "Demande supprimée"
+                      : r.action === "call_logged"
+                      ? ar ? "توثيق مكالمة" : "Appel noté"
                       : `${statusText[r.from_status ?? ""]?.[lang] ?? r.from_status} ← ${statusText[r.to_status ?? ""]?.[lang] ?? r.to_status}`}
                   </span>
                   <span className="text-xs text-muted-foreground" dir="ltr">

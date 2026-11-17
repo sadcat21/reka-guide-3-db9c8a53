@@ -15,3 +15,4 @@
 - Staff access lives in `src/lib/staff.ts` (admin via `user_roles`, assistants via `rifqa_assistants` permission flags); RLS and DB triggers enforce permissions, the UI only mirrors them.
 - Assistant accounts are created/reset/deleted only through admin-checked server functions in `src/lib/team.functions.ts`; assistants sign in by username mapped to an internal e-mail domain.
 - Staff statistics are derived from the trigger-written `rifqa_registration_activity` log, never from client-reported counts.
+- Call Copilot guidance (personalities, red lines, objections, scripts, follow-up cadence, WhatsApp templates) lives in `src/lib/call-guide.ts`, sourced from the call-team guide; calls are stored in `rifqa_call_logs` and a DB trigger mirrors each one into the activity log for staff stats.

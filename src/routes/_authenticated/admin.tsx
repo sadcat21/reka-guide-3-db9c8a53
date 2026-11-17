@@ -1,7 +1,8 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { Fragment, useMemo, useState } from "react";
-import { Download, RefreshCw, Trash2 } from "lucide-react";
+import { Download, PhoneCall, RefreshCw, Trash2 } from "lucide-react";
+import { callLogsQuery, dueFollowUps, latestCallByRegistration, outcomes, type OutcomeId } from "@/lib/call-guide";
 import { supabase } from "@/integrations/supabase/client";
 import { staffAccessQuery } from "@/lib/staff";
 import { StaffNav } from "@/components/StaffNav";
@@ -46,7 +47,11 @@ export const Route = createFileRoute("/_authenticated/admin")({
     }
     if (!access.can.can_view_registrations) throw redirect({ to: "/my-stats" });
   },
-  loader: ({ context }) => context.queryClient.ensureQueryData(adminRegistrationsQuery),
+  loader: ({ context }) =>
+    Promise.all([
+      context.queryClient.ensureQueryData(adminRegistrationsQuery),
+      context.queryClient.ensureQueryData(callLogsQuery),
+    ]),
   component: AdminDashboard,
 });
 
@@ -75,17 +80,22 @@ function AdminDashboard() {
   const [status, setStatus] = useState<"all" | RegistrationStatus>("all");
   const [pkg, setPkg] = useState<"all" | PackageId>("all");
   const [openId, setOpenId] = useState<string | null>(null);
+  const { data: callLogs } = useSuspenseQuery(callLogsQuery);
+  const lastCall = useMemo(() => latestCallByRegistration(callLogs), [callLogs]);
+  const due = useMemo(() => dueFollowUps(callLogs), [callLogs]);
+  const [onlyDue, setOnlyDue] = useState(false);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return rows.filter(
       (r) =>
+        (!onlyDue || due.has(r.id)) &&
         (status === "all" || r.status === status) &&
         (pkg === "all" || r.package_type === pkg) &&
         (!q ||
           [r.full_name, r.phone, r.wilaya, r.reference].some((v) => v.toLowerCase().includes(q))),
     );
-  }, [rows, search, status, pkg]);
+  }, [rows, search, status, pkg, onlyDue, due]);
 
   const updateStatus = useMutation({
     mutationFn: async ({ id, value }: { id: string; value: RegistrationStatus }) => {
@@ -151,11 +161,12 @@ function AdminDashboard() {
         </div>
       </div>
 
-      <dl className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-5">
+      <dl className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-6">
         <Stat label={ar ? "إجمالي الطلبات" : "Total"} value={rows.length} />
         {registrationStatuses.map((s) => (
           <Stat key={s} label={statusLabels[s][lang]} value={count(s)} />
         ))}
+        <Stat label={ar ? "متابعات مستحقة" : "Relances dues"} value={due.size} />
       </dl>
 
       <div className="mt-8 flex flex-wrap gap-3">
@@ -166,6 +177,10 @@ function AdminDashboard() {
           onChange={(e) => setSearch(e.target.value)}
           aria-label={ar ? "بحث" : "Recherche"}
         />
+        <Button variant={onlyDue ? "default" : "outline"} aria-pressed={onlyDue} onClick={() => setOnlyDue((v) => !v)}>
+          <PhoneCall />
+          {ar ? `المتابعات المستحقة (${due.size})` : `Relances dues (${due.size})`}
+        </Button>
         <select className={selectCls} value={status} onChange={(e) => setStatus(e.target.value as typeof status)} aria-label={ar ? "الحالة" : "Statut"}>
           <option value="all">{ar ? "كل الحالات" : "Tous les statuts"}</option>
           {registrationStatuses.map((s) => (
@@ -184,7 +199,7 @@ function AdminDashboard() {
         <table className="w-full min-w-[900px] text-sm">
           <thead className="bg-muted text-start text-muted-foreground">
             <tr>
-              {[ar ? "التاريخ" : "Date", ar ? "الاسم" : "Nom", ar ? "الهاتف" : "Téléphone", ar ? "الولاية" : "Wilaya", ar ? "الباقة" : "Formule", ar ? "نوع التسجيل" : "Inscription", ar ? "الإقامة" : "Hébergement", ar ? "الملف" : "Profil", ar ? "الحالة" : "Statut"].map((h) => (
+              {[ar ? "التاريخ" : "Date", ar ? "الاسم" : "Nom", ar ? "الهاتف" : "Téléphone", ar ? "الولاية" : "Wilaya", ar ? "الباقة" : "Formule", ar ? "نوع التسجيل" : "Inscription", ar ? "الإقامة" : "Hébergement", ar ? "الملف" : "Profil", ar ? "الحالة" : "Statut", ar ? "المكالمة" : "Appel"].map((h) => (
                 <th key={h} className="px-3 py-3 text-start font-semibold">{h}</th>
               ))}
             </tr>
@@ -192,7 +207,7 @@ function AdminDashboard() {
           <tbody>
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-3 py-10 text-center text-muted-foreground">
+                <td colSpan={10} className="px-3 py-10 text-center text-muted-foreground">
                   {ar ? "لا توجد طلبات بعد." : "Aucune demande pour le moment."}
                 </td>
               </tr>
@@ -224,10 +239,23 @@ function AdminDashboard() {
                       ))}
                     </select>
                   </td>
+                  <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
+                    <Button asChild size="sm" variant={due.has(r.id) ? "default" : "outline"}>
+                      <Link to="/call/$id" params={{ id: r.id }}>
+                        <PhoneCall />
+                        {due.has(r.id) ? (ar ? "متابعة الآن" : "Relancer") : ar ? "مساعد المكالمة" : "Appeler"}
+                      </Link>
+                    </Button>
+                    {lastCall.get(r.id) && (
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {outcomes[lastCall.get(r.id)!.outcome as OutcomeId]?.title[lang]}
+                      </p>
+                    )}
+                  </td>
                 </tr>
                 {openId === r.id && (
                   <tr className="bg-muted/30">
-                    <td colSpan={9} className="px-4 py-4">
+                    <td colSpan={10} className="px-4 py-4">
                       <dl className="grid gap-3 md:grid-cols-2">
                         <Detail label={ar ? "المرجع" : "Référence"} value={r.reference} />
                         <Detail label={ar ? "الجنس / العمر" : "Sexe / âge"} value={`${r.gender || "—"} / ${r.age_range || "—"}`} />

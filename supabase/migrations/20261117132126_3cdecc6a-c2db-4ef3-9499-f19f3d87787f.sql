@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS rifqa_call_logs_actor_idx ON public.rifqa_call_logs (actor_id);

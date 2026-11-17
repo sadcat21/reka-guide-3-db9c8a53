@@ -109,6 +109,7 @@ export type StaffStats = {
   confirmed: number;
   cancelled: number;
   deleted: number;
+  calls: number;
   today: number;
   last7: number;
   activeDays: number;
@@ -120,13 +121,14 @@ export type StaffStats = {
 export function computeStats(rows: Pick<ActivityRow, "action" | "to_status" | "created_at">[], now = new Date()): StaffStats {
   const todayKey = dayKey(now);
   const perDay = new Map<string, number>();
-  let contacted = 0, confirmed = 0, cancelled = 0, deleted = 0, last7 = 0;
+  let contacted = 0, confirmed = 0, cancelled = 0, deleted = 0, calls = 0, last7 = 0;
   for (const r of rows) {
     const d = new Date(r.created_at);
     const k = dayKey(d);
     perDay.set(k, (perDay.get(k) ?? 0) + 1);
     if (now.getTime() - d.getTime() < 7 * DAY) last7++;
     if (r.action === "deleted") deleted++;
+    else if (r.action === "call_logged") calls++;
     else if (r.to_status === "contacted") contacted++;
     else if (r.to_status === "confirmed") confirmed++;
     else if (r.to_status === "cancelled") cancelled++;
@@ -143,6 +145,7 @@ export function computeStats(rows: Pick<ActivityRow, "action" | "to_status" | "c
     confirmed,
     cancelled,
     deleted,
+    calls,
     today: perDay.get(todayKey) ?? 0,
     last7,
     activeDays: perDay.size,
@@ -167,6 +170,7 @@ export function computeBadges(s: StaffStats): Badge[] {
     b("confirm-25", "25 تأكيدًا", "25 confirmations", s.confirmed, 25),
     b("streak-3", "3 أيام متتالية", "3 jours d’affilée", s.streak, 3),
     b("streak-7", "أسبوع متواصل", "7 jours d’affilée", s.streak, 7),
+    b("calls-10", "10 مكالمات موثقة", "10 appels notés", s.calls, 10),
     b("century", "100 إنجاز", "100 actions", s.total, 100),
   ];
 }
