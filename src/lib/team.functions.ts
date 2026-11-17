@@ -13,7 +13,13 @@ const perms = {
 
 type Ctx = { supabase: import("@supabase/supabase-js").SupabaseClient; userId: string };
 async function assertAdmin(context: Ctx) {
-  const { data } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
+  // Reads the caller's own role row (allowed by RLS), so no callable role function is exposed.
+  const { data } = await context.supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", context.userId)
+    .eq("role", "admin")
+    .maybeSingle();
   if (!data) throw new Error("Forbidden");
 }
 
