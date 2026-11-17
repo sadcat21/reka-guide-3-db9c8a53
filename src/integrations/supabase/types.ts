@@ -140,6 +140,78 @@ export type Database = {
         }
         Relationships: []
       }
+      rifqa_assistants: {
+        Row: {
+          can_delete_registrations: boolean
+          can_export_csv: boolean
+          can_update_status: boolean
+          can_view_registrations: boolean
+          created_at: string
+          display_name: string
+          is_active: boolean
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          can_delete_registrations?: boolean
+          can_export_csv?: boolean
+          can_update_status?: boolean
+          can_view_registrations?: boolean
+          created_at?: string
+          display_name: string
+          is_active?: boolean
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          can_delete_registrations?: boolean
+          can_export_csv?: boolean
+          can_update_status?: boolean
+          can_view_registrations?: boolean
+          created_at?: string
+          display_name?: string
+          is_active?: boolean
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      rifqa_registration_activity: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          from_status: string | null
+          id: string
+          registration_id: string
+          registration_reference: string
+          to_status: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          from_status?: string | null
+          id?: string
+          registration_id: string
+          registration_reference: string
+          to_status?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          from_status?: string | null
+          id?: string
+          registration_id?: string
+          registration_reference?: string
+          to_status?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -168,6 +240,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      rifqa_assistant_can: {
+        Args: { _perm: string; _user_id: string }
         Returns: boolean
       }
     }
