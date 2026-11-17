@@ -179,6 +179,47 @@ export type Database = {
         }
         Relationships: []
       }
+      rifqa_call_logs: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          follow_up_at: string | null
+          id: string
+          notes: string
+          outcome: string
+          persona: string | null
+          registration_id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          follow_up_at?: string | null
+          id?: string
+          notes?: string
+          outcome: string
+          persona?: string | null
+          registration_id: string
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          follow_up_at?: string | null
+          id?: string
+          notes?: string
+          outcome?: string
+          persona?: string | null
+          registration_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rifqa_call_logs_registration_id_fkey"
+            columns: ["registration_id"]
+            isOneToOne: false
+            referencedRelation: "murshid_rifqa_registrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rifqa_registration_activity: {
         Row: {
           action: string
