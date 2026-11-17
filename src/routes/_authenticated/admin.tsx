@@ -57,7 +57,7 @@ const pick = <T extends Record<string, { ar: string; fr: string }>>(
   map: T,
   key: string,
   lang: "ar" | "fr",
-) => (key in map ? map[key as keyof T][lang] : key || "—");
+) => map[key as keyof T]?.[lang] ?? (key || "—");
 
 function AdminDashboard() {
   const { lang } = useLang();
