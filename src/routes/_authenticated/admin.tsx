@@ -1,11 +1,12 @@
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { Fragment, useMemo, useState } from "react";
-import { Download, LogOut, RefreshCw } from "lucide-react";
+import { Download, RefreshCw, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { staffAccessQuery } from "@/lib/staff";
+import { StaffNav } from "@/components/StaffNav";
 import {
   adminRegistrationsQuery,
-  currentUserIsAdmin,
   registrationStatuses,
   type RegistrationStatus,
 } from "@/lib/admin";
@@ -36,11 +37,14 @@ export const Route = createFileRoute("/_authenticated/admin")({
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  beforeLoad: async () => {
-    if (!(await currentUserIsAdmin())) {
+  beforeLoad: async ({ context }) => {
+    const access = await context.queryClient.ensureQueryData(staffAccessQuery);
+    if (!access || (!access.isAdmin && !access.assistant?.is_active)) {
       await supabase.auth.signOut();
+      context.queryClient.removeQueries({ queryKey: ["admin"] });
       throw redirect({ to: "/admin-login" });
     }
+    if (!access.can.can_view_registrations) throw redirect({ to: "/my-stats" });
   },
   loader: ({ context }) => context.queryClient.ensureQueryData(adminRegistrationsQuery),
   component: AdminDashboard,
@@ -62,8 +66,10 @@ const pick = <T extends Record<string, { ar: string; fr: string }>>(
 function AdminDashboard() {
   const { lang } = useLang();
   const ar = lang === "ar";
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { data: access } = useSuspenseQuery(staffAccessQuery);
+  const can = access?.can;
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const { data: rows, refetch, isFetching } = useSuspenseQuery(adminRegistrationsQuery);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<"all" | RegistrationStatus>("all");
@@ -89,14 +95,20 @@ function AdminDashboard() {
         .eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: adminRegistrationsQuery.queryKey }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin"] }),
   });
 
-  async function signOut() {
-    await supabase.auth.signOut();
-    queryClient.removeQueries({ queryKey: ["admin"] });
-    await navigate({ to: "/" });
-  }
+  const removeRegistration = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("murshid_rifqa_registrations").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      setConfirmDelete(null);
+      setOpenId(null);
+      return queryClient.invalidateQueries({ queryKey: ["admin"] });
+    },
+  });
 
   function exportCsv() {
     const header = [
@@ -117,7 +129,11 @@ function AdminDashboard() {
   const count = (s: RegistrationStatus) => rows.filter((r) => r.status === s).length;
   const selectCls = "h-10 rounded-md border border-input bg-background px-3 text-sm";
 
+  if (!access || !can) return null;
+
   return (
+    <>
+    <StaffNav access={access} />
     <section className="mx-auto max-w-7xl px-4 py-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-3xl font-bold text-teal">{ar ? "لوحة الإدارة" : "Tableau de bord"}</h1>
@@ -126,14 +142,12 @@ function AdminDashboard() {
             <RefreshCw className={isFetching ? "animate-spin" : ""} />
             {ar ? "تحديث" : "Actualiser"}
           </Button>
-          <Button variant="outline" onClick={exportCsv} disabled={!filtered.length}>
-            <Download />
-            {ar ? "تصدير CSV" : "Exporter CSV"}
-          </Button>
-          <Button variant="ghost" onClick={signOut}>
-            <LogOut />
-            {ar ? "خروج" : "Déconnexion"}
-          </Button>
+          {can.can_export_csv && (
+            <Button variant="outline" onClick={exportCsv} disabled={!filtered.length}>
+              <Download />
+              {ar ? "تصدير CSV" : "Exporter CSV"}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -201,7 +215,7 @@ function AdminDashboard() {
                     <select
                       className={selectCls}
                       value={r.status}
-                      disabled={updateStatus.isPending}
+                      disabled={updateStatus.isPending || !can.can_update_status}
                       onChange={(e) => updateStatus.mutate({ id: r.id, value: e.target.value as RegistrationStatus })}
                       aria-label={ar ? `حالة ${r.full_name}` : `Statut de ${r.full_name}`}
                     >
@@ -224,6 +238,28 @@ function AdminDashboard() {
                         ))}
                         <Detail label={ar ? "ملاحظات" : "Notes"} value={r.notes || "—"} />
                       </dl>
+                      {can.can_delete_registrations && (
+                        <div className="mt-4 flex flex-wrap items-center gap-2">
+                          {confirmDelete === r.id ? (
+                            <>
+                              <span className="text-sm font-semibold text-destructive">
+                                {ar ? "تأكيد حذف هذا الطلب نهائيًا؟" : "Supprimer définitivement ?"}
+                              </span>
+                              <Button size="sm" variant="destructive" disabled={removeRegistration.isPending} onClick={() => removeRegistration.mutate(r.id)}>
+                                {ar ? "نعم، احذف" : "Oui, supprimer"}
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => setConfirmDelete(null)}>
+                                {ar ? "إلغاء" : "Annuler"}
+                              </Button>
+                            </>
+                          ) : (
+                            <Button size="sm" variant="ghost" className="text-destructive" onClick={() => setConfirmDelete(r.id)}>
+                              <Trash2 />
+                              {ar ? "حذف الطلب" : "Supprimer la demande"}
+                            </Button>
+                          )}
+                        </div>
+                      )}
                     </td>
                   </tr>
                 )}
@@ -237,7 +273,13 @@ function AdminDashboard() {
           {ar ? "تعذر تحديث الحالة، حاول مجددًا." : "Échec de la mise à jour du statut."}
         </p>
       )}
+      {removeRegistration.isError && (
+        <p role="alert" className="mt-3 text-sm text-destructive">
+          {ar ? "تعذر حذف الطلب." : "Échec de la suppression."}
+        </p>
+      )}
     </section>
+    </>
   );
 }
 

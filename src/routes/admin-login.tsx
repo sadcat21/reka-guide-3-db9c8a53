@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { currentUserIsAdmin } from "@/lib/admin";
+import { useQueryClient } from "@tanstack/react-query";
+import { fetchStaffAccess, loginToEmail } from "@/lib/staff";
 import { useLang } from "@/i18n/LanguageProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,7 @@ function AdminLogin() {
   const { lang } = useLang();
   const ar = lang === "ar";
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -39,34 +41,42 @@ function AdminLogin() {
     setBusy(true);
     setError("");
     const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
+      email: loginToEmail(email),
       password,
     });
     if (signInError) {
-      setError(ar ? "البريد الإلكتروني أو كلمة المرور غير صحيحة." : "E-mail ou mot de passe incorrect.");
+      setError(ar ? "اسم المستخدم أو كلمة المرور غير صحيحة." : "Identifiant ou mot de passe incorrect.");
       setBusy(false);
       return;
     }
-    if (!(await currentUserIsAdmin())) {
+    queryClient.removeQueries({ queryKey: ["admin"] });
+    const access = await fetchStaffAccess();
+    if (!access || (!access.isAdmin && !access.assistant?.is_active)) {
       await supabase.auth.signOut();
-      setError(ar ? "هذا الحساب لا يملك صلاحية الإدارة." : "Ce compte n’a pas d’accès administrateur.");
+      setError(
+        access?.assistant
+          ? ar ? "حسابك معطّل حاليًا، تواصل مع المدير." : "Votre compte est désactivé."
+          : ar ? "هذا الحساب لا يملك صلاحية الدخول." : "Ce compte n’a pas d’accès.",
+      );
       setBusy(false);
       return;
     }
-    await navigate({ to: "/admin" });
+    queryClient.setQueryData(["admin", "access"], access);
+    await navigate({ to: access.can.can_view_registrations ? "/admin" : "/my-stats" });
   }
 
   return (
     <section className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-16">
       <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
         <Lock className="mb-4 h-10 w-10 text-primary" />
-        <h1 className="text-2xl font-bold text-teal">{ar ? "دخول الإدارة" : "Connexion administrateur"}</h1>
+        <h1 className="text-2xl font-bold text-teal">{ar ? "دخول الإدارة والفريق" : "Connexion équipe"}</h1>
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="admin-email">{ar ? "البريد الإلكتروني" : "E-mail"}</Label>
+            <Label htmlFor="admin-email">{ar ? "اسم المستخدم أو البريد الإلكتروني" : "Identifiant ou e-mail"}</Label>
             <Input
               id="admin-email"
-              type="email"
+              type="text"
+              autoCapitalize="none"
               dir="ltr"
               autoComplete="username"
               required

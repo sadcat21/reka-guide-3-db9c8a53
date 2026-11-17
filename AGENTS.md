@@ -12,3 +12,6 @@
 - Use `src/lib/journey.ts` as the single source for questionnaire IDs, profile rules, prices and validation; bilingual display copy stays separate from stable answer values.
 - Mount JourneyProvider in the shared root to preserve answers across routes; read browser storage only after hydration.
 - Keep registration submission behind `src/services/registrationService.ts` so a future validated remote implementation can replace the explicit local demonstration without changing the UI.
+- Staff access lives in `src/lib/staff.ts` (admin via `user_roles`, assistants via `rifqa_assistants` permission flags); RLS and DB triggers enforce permissions, the UI only mirrors them.
+- Assistant accounts are created/reset/deleted only through admin-checked server functions in `src/lib/team.functions.ts`; assistants sign in by username mapped to an internal e-mail domain.
+- Staff statistics are derived from the trigger-written `rifqa_registration_activity` log, never from client-reported counts.

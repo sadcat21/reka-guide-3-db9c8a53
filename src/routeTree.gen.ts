@@ -15,6 +15,8 @@ import { Route as AdminLoginRouteImport } from './routes/admin-login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RegistrationSuccessRouteImport } from './routes/registration-success'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedMyStatsRouteImport } from './routes/_authenticated/my-stats'
+import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -45,6 +47,16 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMyStatsRoute = AuthenticatedMyStatsRouteImport.update({
+  id: '/my-stats',
+  path: '/my-stats',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTeamRoute = AuthenticatedTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -52,6 +64,8 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/registration-success': typeof RegistrationSuccessRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/my-stats': typeof AuthenticatedMyStatsRoute
+  '/team': typeof AuthenticatedTeamRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +73,8 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/registration-success': typeof RegistrationSuccessRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/my-stats': typeof AuthenticatedMyStatsRoute
+  '/team': typeof AuthenticatedTeamRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,13 +84,28 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/registration-success': typeof RegistrationSuccessRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/my-stats': typeof AuthenticatedMyStatsRoute
+  '/_authenticated/team': typeof AuthenticatedTeamRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/admin-login' | '/register' | '/registration-success' | '/admin'
+    | '/'
+    | '/admin-login'
+    | '/register'
+    | '/registration-success'
+    | '/admin'
+    | '/my-stats'
+    | '/team'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin-login' | '/register' | '/registration-success' | '/admin'
+  to:
+    | '/'
+    | '/admin-login'
+    | '/register'
+    | '/registration-success'
+    | '/admin'
+    | '/my-stats'
+    | '/team'
   id:
     | '__root__'
     | '/'
@@ -83,6 +114,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/registration-success'
     | '/_authenticated/admin'
+    | '/_authenticated/my-stats'
+    | '/_authenticated/team'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -137,15 +170,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/my-stats': {
+      id: '/_authenticated/my-stats'
+      path: '/my-stats'
+      fullPath: '/my-stats'
+      preLoaderRoute: typeof AuthenticatedMyStatsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/team': {
+      id: '/_authenticated/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof AuthenticatedTeamRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedMyStatsRoute: typeof AuthenticatedMyStatsRoute
+  AuthenticatedTeamRoute: typeof AuthenticatedTeamRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedMyStatsRoute: AuthenticatedMyStatsRoute,
+  AuthenticatedTeamRoute: AuthenticatedTeamRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
